@@ -1,4 +1,3 @@
-
 import random
 
 def randomised_503(request_handler):

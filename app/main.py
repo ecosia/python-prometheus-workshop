@@ -1,10 +1,9 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from util import randomised_503
-
 import json
 import requests
 import time
-import random
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from util import randomised_503
+
 
 HOST_NAME = '0.0.0.0' # This will map to avialable port in docker
 PORT_NUMBER = 8001
