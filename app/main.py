@@ -5,7 +5,9 @@ import time
 import random
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from util import artificial_503, artificial_latency
-from prometheus_client import MetricsHandler
+from prometheus_client import Counter, MetricsHandler
+
+c = Counter('requests_total', 'requests', ['status', 'endpoint'])
 
 
 HOST_NAME = '0.0.0.0' # This will map to avialable port in docker
@@ -16,10 +18,12 @@ with open('./templates/treeCounter.html', 'r') as f:
 html_template = Template(html_string)
 
 def fetch_tree_count():
-       r = requests.get(trees_api_url) if random.random() > 0.15 else artificial_503()
-       if r.status_code == 200:
-               return r.json()['count']
-       return 0
+    r = requests.get(trees_api_url) if random.random() > 0.15 else artificial_503()
+    # Here is one possible place you may decide to call this metric from
+    c.labels(status=f'{r.status_code}', endpoint='/trees').inc()
+    if r.status_code == 200:
+	    return r.json()['count']
+    return 0
 
 
 
