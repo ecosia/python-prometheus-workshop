@@ -5,6 +5,7 @@ import time
 import random
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from util import artificial_503, artificial_latency
+from prometheus_client import MetricsHandler
 
 
 HOST_NAME = '0.0.0.0' # This will map to avialable port in docker
@@ -22,7 +23,7 @@ def fetch_tree_count():
 
 
 
-class HTTPRequestHandler(BaseHTTPRequestHandler):
+class HTTPRequestHandler(MetricsHandler):
 
     @artificial_latency
     def get_treecounter(self):
@@ -40,6 +41,8 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         endpoint = self.path
         if endpoint == '/treecounter':
             return self.get_treecounter()
+        elif endpoint == '/metrics':
+            return super(HTTPRequestHandler, self).do_GET()
         else:
             self.send_error(404)
 
