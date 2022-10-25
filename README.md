@@ -1,5 +1,7 @@
 # Workshop: Monitoring Python Applications with Prometheus
 
+⚠️ ***Please note that the content may not be representative of Ecosia's current engineering standards.***
+
 ## Objective
 
 In the directory `app/`, we have a simple Python application. We want to start observing the behaviour of this application at runtime, by tracking and exporting metric data.
